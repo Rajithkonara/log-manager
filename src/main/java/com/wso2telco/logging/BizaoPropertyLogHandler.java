@@ -24,18 +24,20 @@ import org.apache.synapse.MessageContext;
 import org.apache.synapse.config.Entry;
 
 /**
- * Generic log handler for AM
+ * Bizao log handler
  */
-public class PropertyLogHandler extends LogHandler {
+public class BizaoPropertyLogHandler extends LogHandler {
 
+    private static final Log logHandler = LogFactory.getLog("REQUEST_RESPONSE_LOGGER");
     private static final String REGISTRY_PATH = "gov:/apimgt/";
     private static final String PAYLOAD_LOGGING_ENABLED = "payload.logging.enabled";
-    private static final Log logHandler = LogFactory.getLog("REQUEST_RESPONSE_LOGGER");
+    private static final String BIZAO_TOKEN = "bizao-token";
+    private static final String BIZAO_ALIAS = "bizao-alias";
 
     @Override
     public void logRequestProperties(MessageContext messageContext,
                                      org.apache.axis2.context.MessageContext axis2MessageContext,
-                                     boolean isPayloadLoggingEnabled){
+                                     boolean isPayloadLoggingEnabled) {
 
         RequestDTO requestDTO = new RequestDTO();
         requestDTO.setApiRequestId(String.valueOf(messageContext.getProperty(UUID)));
@@ -51,13 +53,17 @@ public class PropertyLogHandler extends LogHandler {
         requestDTO.setMethod(String.valueOf(messageContext.getProperty(METHOD)));
         requestDTO.setRequestBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler, super.logRequestProperties2(requestDTO, isPayloadLoggingEnabled));
+        String orange = super.logRequestProperties2(requestDTO, isPayloadLoggingEnabled);
+        orange += ",BIZAO_TOKEN:" + messageContext.getProperty(BIZAO_TOKEN)
+                + ",BIZAO_ALIAS:" + messageContext.getProperty(BIZAO_ALIAS);
+
+        super.printLog(logHandler, orange);
     }
 
     @Override
     public void logResponseProperties(MessageContext messageContext,
-                                        org.apache.axis2.context.MessageContext axis2MessageContext,
-                                        boolean isPayloadLoggingEnabled) {
+                               org.apache.axis2.context.MessageContext axis2MessageContext,
+                               boolean isPayloadLoggingEnabled) {
 
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setApiRequestId(String.valueOf(messageContext.getProperty(UUID)));
@@ -66,12 +72,13 @@ public class PropertyLogHandler extends LogHandler {
         responseDTO.setResponseBody(super.handleAndReturnPayload(messageContext));
 
         super.printLog(logHandler,super.logResponseProperties2(responseDTO, isPayloadLoggingEnabled));
+
     }
 
     @Override
     public void logErrorProperties(MessageContext messageContext,
-                                     org.apache.axis2.context.MessageContext axis2MessageContext,
-                                     boolean isPayloadLoggingEnabled) {
+                            org.apache.axis2.context.MessageContext axis2MessageContext,
+                            boolean isPayloadLoggingEnabled) {
 
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setApiRequestId(String.valueOf(messageContext.getProperty(UUID)));
@@ -87,10 +94,16 @@ public class PropertyLogHandler extends LogHandler {
         errorDTO.setHttpStatusCode(String.valueOf(axis2MessageContext.getProperty(HTTP_SC)));
         errorDTO.setErrorMessage(String.valueOf(messageContext.getProperty(ERROR_MESSAGE)));
 
-        super.printLog(logHandler, super.logErrorProperties2(errorDTO, isPayloadLoggingEnabled));
+        String orange = super.logErrorProperties2(errorDTO, isPayloadLoggingEnabled);
+        orange += ",BIZAO_TOKEN:" + messageContext.getProperty(BIZAO_TOKEN)
+                + ",BIZAO_ALIAS:" + messageContext.getProperty(BIZAO_ALIAS);
+
+        super.printLog(logHandler, orange);
     }
 
-    Entry getPayloadEntry() {
+    @Override
+    public Entry getPayloadEntry() {
         return new Entry(REGISTRY_PATH + PAYLOAD_LOGGING_ENABLED);
     }
+
 }
