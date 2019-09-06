@@ -65,7 +65,6 @@ public abstract class LogHandler extends AbstractMediator {
     public static final String ERRVAR = "errvar";
     public static final String THROTTLED_OUT_REASON = "THROTTLED_OUT_REASON";
 
-    //abstract 4 methods
     abstract void logRequestProperties(MessageContext messageContext,
                                        org.apache.axis2.context.MessageContext axis2MessageContext,
                                        boolean isPayloadLoggingEnabled);
@@ -119,7 +118,7 @@ public abstract class LogHandler extends AbstractMediator {
         return true;
     }
 
-    public String logRequestProperties2(RequestDTO dto, boolean isPayloadLoggingEnabled) {
+    public String captureRequestProperties(RequestDTO dto, boolean isPayloadLoggingEnabled) {
 
         if (isPayloadLoggingEnabled) {
             String requestPayload = dto.getRequestBody();
@@ -139,8 +138,8 @@ public abstract class LogHandler extends AbstractMediator {
         return null;
     }
 
-    public String logResponseProperties2(ResponseDTO dto,
-                                         boolean isPayloadLoggingEnabled) {
+    public String captureResponseProperties(ResponseDTO dto,
+                                            boolean isPayloadLoggingEnabled) {
 
         if (isPayloadLoggingEnabled) {
 
@@ -157,7 +156,7 @@ public abstract class LogHandler extends AbstractMediator {
 
     }
 
-    public String logErrorProperties2(ErrorDTO dto, boolean isPayloadLoggingEnabled) {
+    public String captureErrorProperties(ErrorDTO dto, boolean isPayloadLoggingEnabled) {
 
         if (isPayloadLoggingEnabled) {
             return  "TRANSACTION:errorResponse" +

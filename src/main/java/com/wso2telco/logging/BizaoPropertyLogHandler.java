@@ -53,7 +53,7 @@ public class BizaoPropertyLogHandler extends LogHandler {
         requestDTO.setMethod(String.valueOf(messageContext.getProperty(METHOD)));
         requestDTO.setRequestBody(super.handleAndReturnPayload(messageContext));
 
-        String orange = super.logRequestProperties2(requestDTO, isPayloadLoggingEnabled);
+        String orange = super.captureRequestProperties(requestDTO, isPayloadLoggingEnabled);
         orange += ",BIZAO_TOKEN:" + messageContext.getProperty(BIZAO_TOKEN)
                 + ",BIZAO_ALIAS:" + messageContext.getProperty(BIZAO_ALIAS);
 
@@ -71,7 +71,7 @@ public class BizaoPropertyLogHandler extends LogHandler {
         responseDTO.setResponseTime(String.valueOf(messageContext.getProperty(RESPONSE_TIME)));
         responseDTO.setResponseBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler,super.logResponseProperties2(responseDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler,super.captureResponseProperties(responseDTO, isPayloadLoggingEnabled));
 
     }
 
@@ -94,7 +94,7 @@ public class BizaoPropertyLogHandler extends LogHandler {
         errorDTO.setHttpStatusCode(String.valueOf(axis2MessageContext.getProperty(HTTP_SC)));
         errorDTO.setErrorMessage(String.valueOf(messageContext.getProperty(ERROR_MESSAGE)));
 
-        String orange = super.logErrorProperties2(errorDTO, isPayloadLoggingEnabled);
+        String orange = super.captureErrorProperties(errorDTO, isPayloadLoggingEnabled);
         orange += ",BIZAO_TOKEN:" + messageContext.getProperty(BIZAO_TOKEN)
                 + ",BIZAO_ALIAS:" + messageContext.getProperty(BIZAO_ALIAS);
 

@@ -51,7 +51,7 @@ public class PropertyLogHandler extends LogHandler {
         requestDTO.setMethod(String.valueOf(messageContext.getProperty(METHOD)));
         requestDTO.setRequestBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler, super.logRequestProperties2(requestDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler, super.captureRequestProperties(requestDTO, isPayloadLoggingEnabled));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PropertyLogHandler extends LogHandler {
         responseDTO.setResponseTime(String.valueOf(messageContext.getProperty(RESPONSE_TIME)));
         responseDTO.setResponseBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler,super.logResponseProperties2(responseDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler,super.captureResponseProperties(responseDTO, isPayloadLoggingEnabled));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class PropertyLogHandler extends LogHandler {
         errorDTO.setHttpStatusCode(String.valueOf(axis2MessageContext.getProperty(HTTP_SC)));
         errorDTO.setErrorMessage(String.valueOf(messageContext.getProperty(ERROR_MESSAGE)));
 
-        super.printLog(logHandler, super.logErrorProperties2(errorDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler, super.captureErrorProperties(errorDTO, isPayloadLoggingEnabled));
     }
 
     Entry getPayloadEntry() {

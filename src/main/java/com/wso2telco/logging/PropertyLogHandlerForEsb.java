@@ -41,7 +41,7 @@ public class PropertyLogHandlerForEsb extends LogHandler {
         requestDTO.setMethod(headers.get(TRP_HTTP_METHOD));
         requestDTO.setRequestBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler, super.logRequestProperties2(requestDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler, super.captureRequestProperties(requestDTO, isPayloadLoggingEnabled));
 
     }
 
@@ -56,7 +56,7 @@ public class PropertyLogHandlerForEsb extends LogHandler {
         responseDTO.setResponseTime(String.valueOf(messageContext.getProperty(RESPONSE_TIME)));
         responseDTO.setResponseBody(super.handleAndReturnPayload(messageContext));
 
-        super.printLog(logHandler, super.logResponseProperties2(responseDTO, isPayloadLoggingEnabled));
+        super.printLog(logHandler, super.captureResponseProperties(responseDTO, isPayloadLoggingEnabled));
 
     }
 
@@ -82,7 +82,7 @@ public class PropertyLogHandlerForEsb extends LogHandler {
         errorDTO.setHttpStatusCode(String.valueOf(axis2MessageContext.getProperty(HTTP_SC)));
         errorDTO.setErrorMessage(String.valueOf(messageContext.getProperty(ERRVAR)));
 
-        String dto = super.logErrorProperties2(errorDTO, isPayloadLoggingEnabled);
+        String dto = super.captureErrorProperties(errorDTO, isPayloadLoggingEnabled);
 
         if (messageContext.getProperty(ERROR_CODE).equals(900800)){
             dto += ",THROTTLED_OUT_REASON:"+
